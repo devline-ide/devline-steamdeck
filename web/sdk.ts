@@ -1,10 +1,7 @@
-export interface DeckContext { locale: string; theme: string; visible: boolean; projectFile?: string; colors: Record<string, string>; effects?: Record<string, string>; view?: { id: string; location: 'dock' | 'sidebar' | 'settings'; settingsScope?: 'user' | 'workspace'; readOnly?: boolean } }
-interface DeckSdk {
-  ready: Promise<void>
-  getContext(): DeckContext
-  onContextChanged(listener: (context: DeckContext) => void): () => void
-  call(method: string, params?: Record<string, unknown>): Promise<unknown>
-}
+import type { DevLineWebviewContext, DevLineWebviewSdk } from '@devline/extension-devkit'
+export interface DeckContext extends DevLineWebviewContext { colors: Record<string, string> }
+type DeckSdk = DevLineWebviewSdk<DeckContext>
+
 declare global { interface Window { devline: DeckSdk } }
 export const sdk = window.devline
 export interface DeckSettings { host: string; port: number; user: string; identityFile: string; backend: 'javafx' | 'desktop-web'; sdkPath: string; appId: string; development: boolean; cloudDirectory: string }
