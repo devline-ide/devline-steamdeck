@@ -11,7 +11,10 @@ import java.nio.file.Path
 fun main() {
     checkDeckRunBackend()
     val root = Files.createTempDirectory("devline-deck-storage-")
-    try { checkDeckSettingsStorage(root) }
+    try {
+        checkLinuxToolchainPaths(root.resolve("toolchain-paths"))
+        checkDeckSettingsStorage(root)
+    }
     finally { Files.walk(root).use { paths -> paths.sorted(Comparator.reverseOrder()).forEach(Files::delete) } }
 }
 
