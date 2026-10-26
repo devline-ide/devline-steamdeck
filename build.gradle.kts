@@ -35,7 +35,7 @@ val packPanel = tasks.register<Exec>("packPanel") {
 val extensionArchive = tasks.register<Zip>("extensionArchive") {
     group = "distribution"
     description = "Builds the independently installable Steam Deck extension."
-    archiveFileName.set("devline-steamdeck-0.2.5.dlextension")
+    archiveFileName.set("devline-steamdeck-0.2.6.dlextension")
     destinationDirectory.set(layout.buildDirectory.dir("extension"))
     from("src/extension/extension.json")
     from(packPanel) { into("web") }

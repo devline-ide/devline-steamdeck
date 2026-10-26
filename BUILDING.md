@@ -2,7 +2,7 @@
 
 Private independent source repository for `devline.steamdeck`. Source provenance and
 the original file hashes are in `migration-source.json`. The original IDE history
-has not been rewritten. Extension source version: `0.2.5`.
+has not been rewritten. Extension source version: `0.2.6`.
 
 ## Local development
 
