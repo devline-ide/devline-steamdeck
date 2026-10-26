@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "id": "linux-amd64",
+  "artifacts": [
+    {
+      "id": "java-25",
+      "url": "https://github.com/adoptium/temurin25-binaries/releases/download/jdk-25.0.4.1%2B1/OpenJDK25U-jdk_x64_linux_hotspot_25.0.4.1_1.tar.gz",
+      "sha256": "dbb698396d478e7fa2b1e50f4103324b2a99b90569ee27c33f2261f9215cf41e",
+      "bytes": 141329719,
+      "kind": "tar.gz",
+      "destination": "runtime",
+      "strip": 1
+    },
+    {
+      "id": "javafx-base",
+      "url": "https://repo.maven.apache.org/maven2/org/openjfx/javafx-base/25.0.4/javafx-base-25.0.4-linux.jar",
+      "sha256": "c4fdfd2b5845edbcaa83928a85fb38dd4c63a337229728fac36d2b6c816763a6",
+      "bytes": 749084,
+      "kind": "file",
+      "destination": "lib/javafx/javafx-base-25.0.4-linux.jar"
+    },
+    {
+      "id": "javafx-graphics",
+      "url": "https://repo.maven.apache.org/maven2/org/openjfx/javafx-graphics/25.0.4/javafx-graphics-25.0.4-linux.jar",
+      "sha256": "7104d131b2bcc65585bb62b471171aae5804ad65a50b64f16a2ed7d5f390024c",
+      "bytes": 5403252,
+      "kind": "file",
+      "destination": "lib/javafx/javafx-graphics-25.0.4-linux.jar"
+    },
+    {
+      "id": "javafx-controls",
+      "url": "https://repo.maven.apache.org/maven2/org/openjfx/javafx-controls/25.0.4/javafx-controls-25.0.4-linux.jar",
+      "sha256": "cb95588636cda9dcc561779f74e41e52c83161f2aeba20c6a9f776423f538a70",
+      "bytes": 2602909,
+      "kind": "file",
+      "destination": "lib/javafx/javafx-controls-25.0.4-linux.jar"
+    },
+    {
+      "id": "javafx-fxml",
+      "url": "https://repo.maven.apache.org/maven2/org/openjfx/javafx-fxml/25.0.4/javafx-fxml-25.0.4-linux.jar",
+      "sha256": "9c3660ee761aa2976d0cd690f5b15eb7fc8da4e03515d4e14a621eca018c7cf0",
+      "bytes": 126177,
+      "kind": "file",
+      "destination": "lib/javafx/javafx-fxml-25.0.4-linux.jar"
+    },
+    {
+      "id": "javafx-media",
+      "url": "https://repo.maven.apache.org/maven2/org/openjfx/javafx-media/25.0.4/javafx-media-25.0.4-linux.jar",
+      "sha256": "5f342db118a6df9be1a06fbca52dda8caf605c5e4e5b36fcf378903c84d173e8",
+      "bytes": 1578419,
+      "kind": "file",
+      "destination": "lib/javafx/javafx-media-25.0.4-linux.jar"
+    },
+    {
+      "id": "javafx-web",
+      "url": "https://repo.maven.apache.org/maven2/org/openjfx/javafx-web/25.0.4/javafx-web-25.0.4-linux.jar",
+      "sha256": "2ac56686b23a99ce73ca06ff16e8464020cf8939178cd1598262019c75f8663c",
+      "bytes": 47588599,
+      "kind": "file",
+      "destination": "lib/javafx/javafx-web-25.0.4-linux.jar"
+    },
+    {
+      "id": "javafx-swing",
+      "url": "https://repo.maven.apache.org/maven2/org/openjfx/javafx-swing/25.0.4/javafx-swing-25.0.4-linux.jar",
+      "sha256": "09a9dc246d2b74d3e721df2090d9d523fb719e05b6586b61ce6c7f39bdf78cb5",
+      "bytes": 88069,
+      "kind": "file",
+      "destination": "lib/javafx/javafx-swing-25.0.4-linux.jar"
+    },
+    {
+      "id": "chromium-152",
+      "url": "https://github.com/jcefmaven/jcefbuild/releases/download/1.0.71/linux-amd64.tar.gz",
+      "sha256": "58bfdafcf98529d02a04f80741620e1f03c2a61724bdab76702869ac4800e7f0",
+      "bytes": 157891982,
+      "kind": "tar.gz",
+      "destination": "tools/jcef/152.0.6/linux-amd64/native"
+    }
+  ]
+}

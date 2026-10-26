@@ -1,0 +1,93 @@
+@use '../../devline-ui-web/src/styles/scrollbar' as scrollbar;
+
+.deck-panel {
+  container-type: inline-size;
+  --ui-control-height: var(--ui-control-height-compact);
+  --ui-button-height: var(--ui-control-height-compact);
+  min-height: 100vh;
+  box-sizing: border-box;
+  padding: var(--space-3);
+  font: var(--ui-font-size-secondary)/var(--ui-line-height) var(--ui-font-family);
+  color: var(--color-text);
+  background: var(--color-editor-bg);
+  user-select: none;
+  &__tabs, &__actions, &__row, &__progress, &__intro, &__status,
+  &__device-bar, &__footer, &__progress-description { display: flex; align-items: center; gap: var(--space-2); }
+  &__tabs {
+    gap: var(--space-1);
+    margin-bottom: var(--space-3);
+    padding-bottom: var(--space-2);
+    border-bottom: 1px solid var(--color-border-subtle);
+    > .ui-button {
+      flex: 1;
+      min-width: 0;
+      padding-inline: var(--space-2);
+      font-size: var(--ui-font-size-secondary);
+      &[aria-pressed='true'] { color: var(--color-tree-active-text); background: var(--color-tree-active-bg); }
+      @media (hover: hover) and (pointer: fine) {
+        &[aria-pressed='true']:not(:disabled):hover { color: var(--color-tree-active-text); background: var(--color-tree-active-hover-bg); }
+      }
+    }
+  }
+  &__intro {
+    margin: var(--space-3) 0 var(--space-2);
+    strong { min-width: 0; font-size: var(--ui-font-size-section); font-weight: 600; }
+    > .ui-icon { flex: none; color: var(--color-text-muted); }
+    > .deck-panel__ready { color: var(--color-action-run); }
+    > .info-tip { flex: none; margin-left: auto; }
+  }
+  &__connection dd { min-width: 0; overflow-wrap: anywhere; }
+  &__summary {
+    margin: 0 0 var(--space-3);
+    > div { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); min-height: var(--ui-tree-row-height); }
+    dt { display: flex; align-items: center; gap: var(--space-1); color: var(--color-text-secondary); }
+    dd { margin: 0; text-align: right; }
+  }
+  &__device-bar { justify-content: space-between; margin-top: var(--space-3); }
+  &__run-bar { display: flex; align-items: center; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-2); > .ui-select { flex: 1 1 110px; min-width: 90px; } }
+  &__run.ui-button { margin-top: 0; max-width: 100%; gap: var(--space-2); font-size: var(--ui-font-size-secondary); }
+  &__actions { flex: none; gap: var(--space-1); }
+  &__icon.ui-button {
+    width: var(--ui-icon-button-size);
+    height: var(--ui-icon-button-size);
+    min-height: 0;
+    padding: 0;
+    flex: 0 0 var(--ui-icon-button-size);
+  }
+
+  &__prepare.ui-button { max-width: 100%; font-size: var(--ui-font-size-secondary); gap: var(--space-2); }
+  &__status { margin-top: var(--space-2); color: var(--color-text-muted); font-size: var(--ui-font-size-secondary); }
+  &__status > .info-tip { flex: none; }
+  &__footer {
+    min-height: var(--ui-control-height-compact);
+    margin-top: var(--space-3);
+    padding-top: var(--space-2);
+    border-top: 1px solid var(--color-border-subtle);
+  }
+  &__footer-tools { margin-left: auto; }
+  &__plugin-path { display: flex; align-items: center; gap: var(--space-2); margin-top: var(--space-2); > .ui-input-field { flex: 1; min-width: 0; } }
+  &__row { justify-content: space-between; }
+  &__progress { flex-wrap: wrap; margin-top: var(--space-3); > .deck-panel__actions { margin-left: auto; } }
+  &__progress-description { flex: 1 1 120px; min-width: 0; > span { min-width: 0; overflow-wrap: anywhere; } > .info-tip { flex: none; } }
+  &__operation { margin-top: var(--space-3); padding-top: var(--space-2); border-top: 1px solid var(--color-border-subtle); }
+  &__operation-log, &__output {
+    @include scrollbar.compact-scrollbar;
+    max-height: min(50vh, 420px);
+    margin: var(--space-2) 0 0;
+    padding: var(--space-2);
+    overflow: auto;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    font-size: var(--ui-font-size-secondary);
+    color: var(--color-text-secondary);
+    background: var(--color-background);
+    user-select: text;
+  }
+  &__diagnostics-modal { min-width: 0; }
+  &__error { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-2); margin-top: var(--space-2); color: var(--color-error-text); overflow-wrap: anywhere; > .ui-button { flex: none; } }
+  p:not(.deck-panel__error) { margin: var(--space-2) 0; color: var(--color-text-muted); }
+  small { color: var(--color-text-muted); }
+  .is-selectable { user-select: text; }
+
+}
+:global(html), :global(body) { margin: 0; min-height: 100%; background: var(--color-editor-bg); }

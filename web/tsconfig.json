@@ -1,0 +1,6 @@
+{
+  "extends": "../../devline-web-shell/tsconfig.json",
+  "compilerOptions": { "noEmit": true, "composite": false, "tsBuildInfoFile": "../build/panel.tsbuildinfo" },
+  "include": ["./**/*.ts", "./**/*.vue", "./**/*.json", "../../devline-web-shell/src/env.d.ts"],
+  "exclude": ["../build", "./vite.config.ts"]
+}

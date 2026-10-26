@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "chromium-152",
+  "archiveSha256": "58bfdafcf98529d02a04f80741620e1f03c2a61724bdab76702869ac4800e7f0",
+  "destination": "tools/jcef/152.0.6/linux-amd64/native",
+  "releaseTag": "jcef-17e805a+cef-152.0.6+g708dc14+chromium-152.0.7977.83",
+  "platform": "linux-amd64",
+  "sourceMetadataSha256": "96663d433ff98b9ad254678b57fb88ae5160342bcaa4c654366137e5bea49050"
+}
