@@ -13,6 +13,7 @@ fun main() {
     val checksum = MessageDigest.getInstance("SHA-256").digest(Files.readAllBytes(archivePath)).joinToString("") { "%02x".format(it) }
     val root = Files.createTempDirectory("devline-deck-check-")
     try {
+        checkLinuxToolchainPaths(root.resolve("toolchain-paths"))
         checkDeckSettings(root.resolve("scopes"), archivePath)
         val profile = root.resolve("profile")
         val distribution = root.resolve("extensions").also(Files::createDirectories)

@@ -23,10 +23,11 @@ internal data class ToolchainArtifact(val id: String, val url: String, val sha25
     val kind: String, val destination: String, val strip: Int = 0)
 internal data class ToolchainManifest(val schemaVersion: Int, val id: String, val artifacts: List<ToolchainArtifact>)
 
-internal class LinuxToolchain(private val profile: Path,
+internal class LinuxToolchain(profile: Path,
     private val manifest: ToolchainManifest = LinuxToolchain::class.java.getResourceAsStream("/toolchain-linux-amd64.json")!!.reader(Charsets.UTF_8).use { Gson().fromJson(it, ToolchainManifest::class.java) }) {
-    val target: Path = profile.resolve("toolchains/targets/linux-amd64")
-    private val cache = profile.resolve("toolchains/downloads")
+    private val profile = profile.toAbsolutePath().normalize()
+    val target: Path = this.profile.resolve("toolchains/targets/linux-amd64")
+    private val cache = this.profile.resolve("toolchains/downloads")
     private val client = HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(20)).followRedirects(HttpClient.Redirect.NORMAL).build()
     init {
         require(manifest.schemaVersion == 1 && manifest.id == "linux-amd64" && manifest.artifacts.size in 3..32)
