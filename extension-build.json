@@ -4,9 +4,10 @@
   "id": "devline.steamdeck",
   "manifest": "src/extension/extension.json",
   "ideRepository": "https://github.com/devline-ide/ozl.devline.ide.git",
-  "ideCommit": "5aa4e4d6c16745cae4530f36cc82dc521479e930",
+  "ideCommit": "315734584c3487ef5ae3e815dd21229b27e7cd40",
   "distribution": "dlextension",
   "native": false,
+  "verificationTasks": ["steamDeckCheck"],
   "buildPlatforms": [
     "windows-amd64",
     "windows-arm64",

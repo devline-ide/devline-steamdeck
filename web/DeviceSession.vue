@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, ref, watch } from 'vue'
 import { UIButton, UIIcon, UIInfoTip, UISelect, vUITooltip as vTippy } from '@devline/ui-web/controls'
-import { buildGroups, buildOptions, buildStamp, buildBackend, selectedBuild, type DeckBuild } from '../../devline-deck-tools/shared/build-inventory'
+import { buildGroups, buildOptions, buildStamp, buildBackend, selectedBuild, type DeckBuild } from '@devline/deck-build-inventory'
 import { sdk } from './sdk'
 import type { DeckOperation } from './sdk'
 import en from './locales/en.json'

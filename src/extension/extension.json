@@ -3,7 +3,7 @@
   "apiVersion": 6,
   "compatibility": {"minIdeVersion": "0.1.0", "capabilities": ["ui.webviews", "ui.settings", "ui.settings-scopes"]},
   "entryPoint": "devline.steamdeck.SteamDeckExtension",
-  "libraries": ["lib/devline-steamdeck-0.1.0.jar", "lib/devline-deck-tools-0.1.0.jar", "lib/commons-compress-1.28.0.jar", "lib/commons-codec-1.19.0.jar", "lib/commons-io-2.20.0.jar", "lib/commons-lang3-3.18.0.jar"],
+  "libraries": ["lib/devline-steamdeck-0.1.0.jar", "lib/devline-deck-tools-0.1.1.jar", "lib/commons-compress-1.28.0.jar", "lib/commons-codec-1.19.0.jar", "lib/commons-io-2.20.0.jar", "lib/commons-lang3-3.18.0.jar"],
   "extension": {
     "schemaVersion": 1,
     "id": "devline.steamdeck",

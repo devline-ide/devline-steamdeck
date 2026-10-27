@@ -61,8 +61,9 @@ After cloning the SDK checkout, run its documented
 Then `node <sdk>/tools/extensions/frontend.mjs panel <this-repository>` type-checks
 and builds the panel without configuring the whole IDE. Gradle's `panelBuild`
 uses that same entry point. UI and frontend tools now come from the declared npm
-dependencies described below. Steam Deck still uses the pinned shared Deck build
-inventory. This does not publish or replace an existing immutable extension release.
+dependencies described below. Deck inventory and JVM tools also use the versioned
+artifacts described below. This does not publish or replace an existing immutable
+extension release.
 
 ## UI package dependency
 
@@ -84,9 +85,31 @@ npm ci --ignore-scripts --no-audit --no-fund
 npm run build
 ```
 
-Steam Deck additionally needs its existing shared Deck inventory source from the
-pinned SDK; the IDE bootstrap supplies that explicit remaining dependency. The
-other five frontends need no sibling IDE checkout for this npm build. JVM/native
-archive assembly remains the responsibility of `ci/build.py` and the Gradle SDK
-build. No existing marketplace version or immutable Git tag is republished by
-this dependency migration.
+This frontend needs no sibling IDE or Deck tools checkout for its npm build.
+JVM/archive assembly remains the responsibility of `ci/build.py` and the Gradle
+SDK build. No existing marketplace version or immutable Git tag is republished
+by this dependency migration.
+
+## Deck tools dependencies
+
+`@devline/deck-build-inventory` 0.1.0 supplies the compiled build inventory API
+and TypeScript declarations through a locked tarball in `vendor/`. The frontend
+does not read `devline-deck-tools/shared`.
+
+The JVM consumes `vendor/devline-deck-tools-0.1.1.jar` as a versioned file
+dependency, with SHA-256 checked before compilation or archive assembly.
+`vendor/deck-tools.json` records the producer source revision and artifact hashes.
+The JAR retains the transport/build API, three Python helpers, Decky plugin ZIP
+and Linux PCRE provider ZIP. Its third-party files and notices remain packaged.
+The host supplies the extension SDK and Gson; Commons Compress remains an
+explicit dependency of this extension.
+
+Normal extension builds do not compile the Deck tools producer, run its Decky
+npm build, or need Docker/WSL for the Linux PCRE bundle. Maintainers rebuild and
+version those immutable producer artifacts when their owning source changes.
+The IDE still owns that producer and its separate tool distribution. Do not edit
+or replace an existing published artifact in place.
+
+`steamDeckCheck` is required by the CI declaration and includes its backend
+check plus real packaged provider/settings/build-profile acceptance. These are
+local tests; they do not connect to hardware or certify an actual Steam Deck.

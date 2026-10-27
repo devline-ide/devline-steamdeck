@@ -26,7 +26,7 @@ def digest(path: Path) -> str:
         return hashlib.file_digest(stream, "sha256").hexdigest()
 
 
-def prepare_submodules(checkout: Path, mirror: Path | None) -> None:
+def prepare_submodules(checkout: Path, mirror: Path | None, excluded: tuple[str, ...] = ()) -> None:
     declaration = checkout / ".gitmodules"
     if not declaration.is_file():
         return
@@ -34,6 +34,8 @@ def prepare_submodules(checkout: Path, mirror: Path | None) -> None:
                                       "--get-regexp", r"^submodule\..*\.path$"], cwd=checkout, text=True)
     for line in output.splitlines():
         key, relative = line.split(None, 1)
+        if relative in excluded:
+            continue
         source = mirror / relative if mirror is not None else None
         if source is not None and (source / ".git").exists():
             # Git's local clone reads committed objects, including the exact
@@ -41,18 +43,18 @@ def prepare_submodules(checkout: Path, mirror: Path | None) -> None:
             name = key[len("submodule."):-len(".path")]
             run(["git", "config", f"submodule.{name}.url", str(source.resolve())], checkout)
             run(["git", "-c", "protocol.file.allow=always", "submodule", "update", "--init", "--", relative], checkout)
-            prepare_submodules(checkout / relative, source)
+            prepare_submodules(checkout / relative, source, excluded)
         else:
             run(["git", "submodule", "update", "--init", "--recursive", "--", relative], checkout)
 
 
-def extension_sdk_projects(ide: Path, extensions: Path, module: str) -> list[str]:
+def extension_sdk_projects(ide: Path, extensions: Path, module: str, *, producer_only: bool = False) -> list[str]:
     """Configure only the extension's source SDK dependency graph in the owned CI checkout.
 
-    The full IDE includes unfinished worktree-only product modules. Independent
-    extensions must not require those unrelated product projects to exist. Keep
+    Independent extensions do not need unrelated Studio product projects. Keep
     the original source/build scripts for every actual SDK dependency. Shared
-    frontend preparation belongs to the extension SDK, not to the IDE shell.
+    frontend tools are installed from the extension's own lockfile. A producer
+    build may exclude references from unrelated SDK verification tasks.
     """
     selected: set[str] = set()
     pending = [module]
@@ -69,8 +71,12 @@ def extension_sdk_projects(ide: Path, extensions: Path, module: str) -> list[str
         if not script.is_file():
             raise RuntimeError(f"The pinned IDE lacks required SDK source: {current}")
         source = script.read_text(encoding="utf-8")
-        dependencies = re.findall(r'project\(\s*":(devline-[a-z0-9-]+)"\s*\)', source)
-        dependencies += re.findall(r'":(devline-[a-z0-9-]+):[a-zA-Z]', source)
+        if producer_only:
+            # A library build must not pull in unrelated SDK verification tasks.
+            dependencies = re.findall(r'\b(?:api|implementation|compileOnly|runtimeOnly|testImplementation|testRuntimeOnly|testCompileOnly)\s*\(\s*project\(\s*":(devline-[a-z0-9-]+)"\s*\)', source)
+        else:
+            dependencies = re.findall(r'project\(\s*":(devline-[a-z0-9-]+)"\s*\)', source)
+            dependencies += re.findall(r'":(devline-[a-z0-9-]+):[a-zA-Z]', source)
         pending.extend(dependencies)
     settings_path = ide / "settings.gradle.kts"
     settings = settings_path.read_text(encoding="utf-8")
@@ -195,9 +201,10 @@ def build(repository: Path, ide_override: Path | None, check_only: bool) -> None
             # Frontends carry compiled UI packages and their own locked tools.
             # Keeping these sources absent also detects accidental alias regressions.
             run(["git", "sparse-checkout", "set", "--no-cone", "/*", "!/docs/audits/",
-                 "!/devline-web-shell/", "!/devline-ui-web/"], ide)
+                 "!/devline-web-shell/", "!/devline-ui-web/", "!/devline-deck-tools/"], ide)
             run(["git", "checkout", "--detach", declaration["ideCommit"]], ide)
-            prepare_submodules(ide, mirror if mirror is not None and (mirror / ".git").exists() else None)
+            prepare_submodules(ide, mirror if mirror is not None and (mirror / ".git").exists() else None,
+                               excluded=("devline-ui-web",))
             peers = Path(native_root) / "peers" if native_root else repository / "build/extension-peers"
             peers.mkdir(parents=True, exist_ok=False)
             sys.path.insert(0, str(ide / "tools/extensions"))
@@ -211,6 +218,8 @@ def build(repository: Path, ide_override: Path | None, check_only: bool) -> None
             # The current extension is the candidate; all its peers stay locked.
             bootstrap(ide, peers, locked=False)
             sdk_projects = extension_sdk_projects(ide, peers, declaration["module"])
+            if "devline-deck-tools" in sdk_projects:
+                raise RuntimeError("The extension SDK still depends on Deck tools sources; use its versioned artifacts")
         wrapper = ["cmd", "/d", "/c", "gradlew.bat"] if os.name == "nt" else ["sh", "gradlew"]
         task = "jar" if declaration["distribution"] == "builtin" else "extensionArchive"
         gradle_arguments = [f":{declaration['module']}:{task}", "--no-daemon", "--max-workers=2"]

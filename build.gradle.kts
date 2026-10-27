@@ -3,13 +3,28 @@ import java.security.MessageDigest
 plugins { kotlin("jvm") }
 
 dependencies {
-    implementation(project(":devline-deck-tools"))
+    implementation(files("vendor/devline-deck-tools-0.1.1.jar"))
     compileOnly(project(":devline-ide-extensions"))
     compileOnly("com.google.code.gson:gson:2.13.2")
     implementation("org.apache.commons:commons-compress:1.28.0")
     testImplementation(project(":devline-ide-extensions"))
     testImplementation("com.google.code.gson:gson:2.13.2")
 }
+
+val deckToolsJar = layout.projectDirectory.file("vendor/devline-deck-tools-0.1.1.jar")
+val verifyDeckTools = tasks.register("verifyDeckTools") {
+    group = "verification"
+    description = "Verifies the immutable Deck tools runtime before compilation and packaging."
+    val expected = "610e5c253b09b603efa9b3cca279b0c81637fcf11025bbda0a068f7a5d1f7296"
+    inputs.file(deckToolsJar)
+    inputs.property("sha256", expected)
+    doLast {
+        val actual = MessageDigest.getInstance("SHA-256").digest(deckToolsJar.asFile.readBytes()).joinToString("") { "%02x".format(it) }
+        require(actual == expected) { "Deck tools JAR checksum mismatch; restore the pinned vendor artifact." }
+    }
+}
+tasks.named("compileKotlin") { dependsOn(verifyDeckTools) }
+tasks.jar { dependsOn(verifyDeckTools) }
 
 tasks.processResources {
     from("src/extension/extension.json") { rename { "steamdeck-extension.json" } }
@@ -21,6 +36,7 @@ val panelInstall = tasks.register<Exec>("panelInstall") {
     inputs.files("package.json", "package-lock.json")
     inputs.dir("vendor")
     outputs.dir(layout.projectDirectory.dir("node_modules/@devline/extension-devkit"))
+    outputs.dir(layout.projectDirectory.dir("node_modules/@devline/deck-build-inventory"))
     outputs.dir(layout.projectDirectory.dir("node_modules/@devline/ui-web"))
     outputs.dir(layout.projectDirectory.dir("node_modules/@devline/animgraph"))
     outputs.dir(layout.projectDirectory.dir("node_modules/@devline/game-render-web"))
@@ -32,7 +48,6 @@ val panelBuild = tasks.register<Exec>("panelBuild") {
     inputs.dir("web")
     inputs.files("package.json", "package-lock.json")
     inputs.dir("vendor")
-    inputs.dir(rootProject.file("devline-deck-tools/shared"))
     outputs.dir(layout.buildDirectory.dir("panel"))
 }
 val packPanel = tasks.register<Exec>("packPanel") {
