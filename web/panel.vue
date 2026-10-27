@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, ref } from 'vue'
-import { UIButton, UIIcon, UIInfoTip, UIInput, UISelect, UIModal, UIModalProvider, vUITooltip as vTippy } from '@devline/ui-web'
+import { UIButton, UIIcon, UIInfoTip, UIInput, UISelect, UIModal, UIModalProvider, vUITooltip as vTippy } from '@devline/ui-web/controls'
 import DeviceSession from './DeviceSession.vue'
 import { sdk } from './sdk'
 import type { DeckOperation, DeckSettings, DeckStatus } from './sdk'
@@ -168,7 +168,7 @@ onBeforeUnmount(() => { disposed = true; unsubscribe(); clearTimeout(timer) })
 
 <style lang="scss" scoped src="./panel.scss" />
 <style lang="scss">
-@use '../../devline-ui-web/src/styles/scrollbar' as scrollbar;
+@use '@devline/ui-web/scrollbar.scss' as scrollbar;
 html { @include scrollbar.compact-scrollbar; }
 .ui-modal-layer { padding: var(--space-2); align-items: center; }
 .ui-modal { max-height: calc(100dvh - 12px); border-radius: var(--ui-modal-radius); }

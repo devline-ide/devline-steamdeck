@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, reactive, ref } from 'vue'
-import { UIButton, UISwitch, UIIcon, UIInfoTip, UIInput, UISelect, vUITooltip as vTippy } from '@devline/ui-web'
+import { UIButton, UISwitch, UIIcon, UIInfoTip, UIInput, UISelect, vUITooltip as vTippy } from '@devline/ui-web/controls'
 import { sdk } from './sdk'
 import type { DeckSettings, DeckStatus } from './sdk'
 import en from './locales/en.json'
