@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "itemId": "devline.steamdeck",
+  "sourceRepository": "devline-ide/devline-steamdeck",
+  "sourceRepositoryId": 1434835688,
+  "distributionRepository": "devline-ide/devline-steamdeck-releases",
+  "distributionRepositoryId": 1437893822,
+  "ownerId": 328436105,
+  "platforms": [
+    "universal"
+  ],
+  "sourceVisibility": "public"
+}

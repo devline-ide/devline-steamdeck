@@ -58,7 +58,7 @@ internal fun checkDeckUpgrade(root: Path, archive: Path) {
     }
     registry().use { registry ->
         val extension = registry.overview().extensions.single()
-        check(extension.enabled && extension.manifest.version == "0.2.6")
+        check(extension.enabled && extension.manifest.version == "0.2.7")
         check(extension.webviews.single { it.id == "settings" }.location == "settings")
         val session = registry.openWebview(extension.manifest.id, "settings", null)
         check(registry.callWebview(session.session, "status", JsonObject()).asJsonObject["settings"].asJsonObject["host"].asString == "qa-device")

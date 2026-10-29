@@ -7,7 +7,7 @@
   "extension": {
     "schemaVersion": 1,
     "id": "devline.steamdeck",
-    "version": "0.2.6",
+    "version": "0.2.7",
     "name": {"en": "Steam Deck", "ru": "Steam Deck"},
     "description": {"en": "Build Linux games, prepare runtimes and deploy to Steam Deck.", "ru": "Сборка Linux-игр, подготовка runtime и запуск на Steam Deck."},
     "publisher": "DevLine",
